@@ -22,6 +22,16 @@ dataset = OGB_MAG(root='./data', preprocess='metapath2vec',
                   transform=transform)
 data = dataset[0]
 
+transe_emb = torch.load('./data/mag/raw/mag_transe_emb.pt', map_location='cpu')
+# print(transe_emb['paper'].shape)
+# print(transe_emb['author'].shape)
+data['paper'].x = torch.cat([data['paper'].x, transe_emb['paper']], dim=1)
+data['author'].x = torch.cat([data['author'].x, transe_emb['author']], dim=1)
+data['field_of_study'].x = torch.cat(
+    [data['field_of_study'].x, transe_emb['field_of_study']], dim=1)
+data['institution'].x = torch.cat(
+    [data['institution'].x, transe_emb['institution']], dim=1)
+
 train_input_nodes = ('paper', data['paper'].train_mask)
 val_input_nodes = ('paper', data['paper'].val_mask)
 test_input_nodes = ('paper', data['paper'].test_mask)
@@ -67,9 +77,9 @@ class Net1(torch.nn.Module):
         self.bns = nn.ModuleList()
 
         for i in range(self.num_layers):
-            self.convs.append(TransformerConv((-1, -1), hidden_dim, heads=3))
-            self.lins.append(Linear(-1, hidden_dim*3))
-            self.bns.append(nn.BatchNorm1d(hidden_dim*3))
+            self.convs.append(GATConv((-1, -1), hidden_dim, heads=4))
+            self.lins.append(Linear(-1, hidden_dim*4))
+            self.bns.append(nn.BatchNorm1d(hidden_dim*4))
 
         # self.dropout = torch.nn.Dropout()
         self.fc_out = Linear(-1, num_classes)
@@ -125,12 +135,12 @@ class Net2(nn.Module):
         return x_dict
 
 
-# model = Net1(hidden_dim=128, num_classes=dataset.num_classes, num_layers=2)
-# model = to_hetero(model, data.metadata(), aggr='sum').to(device)
+model = Net1(hidden_dim=128, num_classes=dataset.num_classes, num_layers=2)
+model = to_hetero(model, data.metadata(), aggr='sum').to(device)
 
-model = Net2(data.metadata(), hidden_dim=64,
-             num_classes=dataset.num_classes, num_layers=2)
-model.to(device)
+# model = Net2(data.metadata(), hidden_dim=64,
+#              num_classes=dataset.num_classes, num_layers=2)
+# model.to(device)
 
 
 @torch.no_grad()

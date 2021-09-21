@@ -30,7 +30,7 @@ class GAT(nn.Module):
             x = self.convs[i](x, edge_index) + self.lins[i]
             x = self.bns[i](x)
             x = F.relu(x, inplace=True)
-            x = F.dropout(x, p=0.2, training=self.training)
+            x = F.dropout(x, p=0.5, training=self.training)
         x = self.fc_out(x)
 
         return x

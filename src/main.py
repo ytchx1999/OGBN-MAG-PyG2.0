@@ -19,6 +19,9 @@ def load_data(args):
     dataset = OGB_MAG(root=args.dataset_dir, preprocess='metapath2vec', transform=T.ToUndirected(merge=True))
     data = dataset[0]
 
+    metapath_emb = torch.load(args.metapath_embed_dir, map_location='cpu')
+    data['paper'].x = torch.cat([data['paper'].x, metapath_emb['paper']], dim=1)
+
     if not os.path.exists(args.transe_embed_dir):
         _ = OGB_MAG(root=args.dataset_dir, preprocess='transe', transform=T.ToUndirected(merge=True))
 
@@ -47,9 +50,10 @@ def main():
     parser.add_argument('--num_layers', type=int, default=2)
     parser.add_argument('--heads', type=int, default=1024)
     parser.add_argument('--dataset_dir', type=str, default='../data/')
+    parser.add_argument('--metapath_embed_dir', type=str, default='../data/mag/raw/mag_metapath2vec_emb.pt')
     parser.add_argument('--transe_embed_dir', type=str, default='../data/mag/raw/mag_transe_emb.pt')
     parser.add_argument('--hidden_dim', type=int, default=128)
-    parser.add_argument('--dropout', type=float, default=0.2)
+    parser.add_argument('--dropout', type=float, default=0.5)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--runs', type=int, default=10)
     parser.add_argument('--epochs', type=int, default=25)

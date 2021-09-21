@@ -48,7 +48,7 @@ def main():
     parser.add_argument('--batch_size', type=int, default=1024)
     parser.add_argument('--num_neighbors', type=int, default=10)
     parser.add_argument('--num_layers', type=int, default=2)
-    parser.add_argument('--heads', type=int, default=1024)
+    parser.add_argument('--heads', type=int, default=4)
     parser.add_argument('--dataset_dir', type=str, default='../data/')
     parser.add_argument('--metapath_embed_dir', type=str, default='../data/mag/raw/mag_metapath2vec_emb.pt')
     parser.add_argument('--transe_embed_dir', type=str, default='../data/mag/raw/mag_transe_emb.pt')

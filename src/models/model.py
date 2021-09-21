@@ -27,7 +27,7 @@ class GAT(nn.Module):
 
     def forward(self, x, edge_index):
         for i in range(self.num_layers):
-            x = self.convs[i](x, edge_index) + self.lins[i]
+            x = self.convs[i](x, edge_index) + self.lins[i](x)
             x = self.bns[i](x)
             x = F.relu(x, inplace=True)
             x = F.dropout(x, p=0.5, training=self.training)

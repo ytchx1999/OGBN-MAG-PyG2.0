@@ -19,6 +19,11 @@ pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geo
 # ogb
 pip install ogb
 ```
+## Experiment setup
+```bash
+cd src/
+python main.py
+```
 
 ## Reference：
 + [Docs](https://pytorch-geometric.readthedocs.io/en/latest/notes/heterogeneous.html#)
@@ -77,5 +82,11 @@ pip install ogb
 ├── ogbn_mag2.ipynb
 ├── ogbn_mag.ipynb
 ├── README.md
+├── src
+│   ├── __init__.py
+│   ├── main.py
+│   └── models
+│       ├── __init__.py
+│       └── model.py
 └── test_data.py
 ```

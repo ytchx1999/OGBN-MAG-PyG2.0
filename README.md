@@ -30,6 +30,7 @@ python main.py
 + [Code](https://github.com/pyg-team/pytorch_geometric/blob/master/examples/hetero/to_hetero_mag.py)
 
 ## Download：
++ [OGBN-MAG](http://snap.stanford.edu/ogb/data/nodeproppred/mag.zip)
 + [Metapath2vec Embedding (800+MB)](https://data.pyg.org/datasets/mag_metapath2vec_emb.zip)
 + [TransE Embedding (1+GB)](https://data.pyg.org/datasets/mag_transe_emb.zip) 
 

@@ -10,7 +10,7 @@ import torch_geometric.transforms as T
 
 import argparse
 import os
-import tqdm
+from tqdm import tqdm
 
 from models.model import GAT
 
@@ -72,7 +72,7 @@ def main():
     val_loader = NeighborLoader(data, num_neighbors=[args.num_neighbors, args.num_neighbors], input_nodes=val_input_nodes, **kwargs)
     test_loader = NeighborLoader(data, num_neighbors=[args.num_neighbors, args.num_neighbors], input_nodes=test_input_nodes, **kwargs)
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device(f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu')
     print(device)
 
     model = GAT(hidden_dim=args.hidden_dim, num_classes=dataset.num_classes, heads=args.heads, num_layers=args.num_layers)
